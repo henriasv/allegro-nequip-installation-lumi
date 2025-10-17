@@ -1,0 +1,21 @@
+Bootstrap: localimage
+From: stage1-base.sif
+
+%setup
+    # Create destinations for site binds that LUMI may inject during build
+    mkdir -p ${SINGULARITY_ROOTFS}/var/spool/slurmd
+
+%post
+    . /opt/miniconda3/etc/profile.d/conda.sh
+    conda activate pytorch
+    pip install --no-cache-dir cython==3.0.11
+    pip install --no-cache-dir nequip==0.15.0 nequip-allegro==0.7.0
+    pip install --no-cache-dir openequivariance
+    mkdir -p /opt/lammps
+    touch /version.conf
+
+%environment
+    export PATH="/opt/miniconda3/envs/pytorch/bin:$PATH"
+    export PYTHONPATH="/opt/miniconda3/envs/pytorch/lib/python3.12/site-packages:$PYTHONPATH"
+
+
